@@ -42,7 +42,7 @@ public class ArrayStorage {
                 }
                 storage[size - 1] = null;
                 size--;
-                break;
+                return;
             }
         }
     }
