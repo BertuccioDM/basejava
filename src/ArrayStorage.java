@@ -14,6 +14,12 @@ public class ArrayStorage {
 
     void save(Resume r) {
         if (storage.length != size) {
+            for (int i = 0; i < size; i++) {
+                if (storage[i].uuid.equals(r.uuid)) {
+                    System.out.println("Такой uuid уже используется");
+                    return;
+                }
+            }
             storage[size] = r;
             size++;
         }
