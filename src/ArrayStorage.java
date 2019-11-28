@@ -13,7 +13,7 @@ public class ArrayStorage {
     }
 
     void save(Resume r) {
-        if (storage.length != size) {
+        if (size != storage.length) {
             for (int i = 0; i < size; i++) {
                 if (storage[i].uuid.equals(r.uuid)) {
                     System.out.println("Такой uuid уже используется");
@@ -27,7 +27,9 @@ public class ArrayStorage {
 
     Resume get(String uuid) {
         for (int i = 0; i < size; i++) {
-            if (storage[i].uuid.equals(uuid)) return storage[i];
+            if (storage[i].uuid.equals(uuid)) {
+                return storage[i];
+            }
         }
         return null;
     }
@@ -35,13 +37,10 @@ public class ArrayStorage {
     void delete(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].uuid.equals(uuid)) {
-                for (int j = i; j < size; j++) {
-                    if (j == size - 1) {
-                        storage[j] = null;
-                    } else {
-                        storage[j] = storage[j + 1];
-                    }
+                for (int j = i; j < size - 1; j++) {
+                    storage[j] = storage[j + 1];
                 }
+                storage[size - 1] = null;
                 size--;
                 break;
             }
@@ -52,11 +51,11 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        Resume[] resumesInStorage = new Resume[size];
+        Resume[] resumes = new Resume[size];
         for (int i = 0; i < size; i++) {
-            resumesInStorage[i] = storage[i];
+            resumes[i] = storage[i];
         }
-        return resumesInStorage;
+        return resumes;
     }
 
     int size() {
