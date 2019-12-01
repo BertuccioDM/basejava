@@ -1,17 +1,18 @@
 package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
+
 import java.util.Arrays;
 
 /**
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private Resume[] storage = new Resume[10000];
+    private Resume[] storage = new Resume[10_000];
     private int size = 0;
 
     public void clear() {
-        Arrays.fill(storage, null);
+        Arrays.fill(storage, 0, size, null);
         size = 0;
         System.out.println("Хранилище очищено.");
     }
@@ -31,8 +32,9 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        if (indexOfResume(uuid) >= 0) {
-            return storage[indexOfResume(uuid)];
+        int id = indexOfResume(uuid);
+        if (id >= 0) {
+            return storage[id];
         } else {
             System.out.println("Резюме с uuid [" + uuid + "] не найдено.");
             return null;
@@ -40,17 +42,15 @@ public class ArrayStorage {
     }
 
     public void delete(String uuid) {
-        if (indexOfResume(uuid) >= 0) {
-            for (int i = 0; i < size; i++) {
-                if (storage[i].getUuid().equals(uuid)) {
-                    if (i != size - 1) {
-                        storage[i] = storage[size - 1];
-                    }
-                    storage[size - 1] = null;
-                    size--;
-                    System.out.println("Резюме с uuid: [" + uuid + "] удалено.");
-                    return;
+        int id = indexOfResume(uuid);
+        if (id >= 0) {
+            if (storage[id].getUuid().equals(uuid)) {
+                if (id != size - 1) {
+                    storage[id] = storage[size - 1];
                 }
+                storage[size - 1] = null;
+                size--;
+                System.out.println("Резюме с uuid: [" + uuid + "] удалено.");
             }
         } else {
             System.out.println("Резюме с uuid [" + uuid + "] не найдено.");
@@ -61,8 +61,7 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     public Resume[] getAll() {
-        Resume[] result = Arrays.copyOf(storage, size);
-        return result;
+        return Arrays.copyOf(storage, size);
     }
 
     public int size() {
@@ -70,8 +69,9 @@ public class ArrayStorage {
     }
 
     public void update(Resume resume) {
-        if (indexOfResume(resume.getUuid()) >= 0) {
-            storage[indexOfResume(resume.getUuid())] = resume;
+        int id = indexOfResume(resume.getUuid());
+        if (id >= 0) {
+            storage[id] = resume;
             System.out.println("Резюме с uuid: [" + resume.getUuid() + "] обновлено.");
         } else {
             System.out.println("Резюме с uuid [" + resume.getUuid() + "] не найдено.");
