@@ -27,7 +27,8 @@ public abstract class AbstractArrayStorage implements Storage {
         } else if (size == storage.length) {
             System.out.println("Array overflow.");
         } else {
-            storage[size] = resume;
+            insertResume(resume);
+            //storage[size] = resume;
             size++;
         }
     }
@@ -80,4 +81,6 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     protected abstract int getIndex(String uuid);
+
+    protected abstract void insertResume(Resume resume);
 }
