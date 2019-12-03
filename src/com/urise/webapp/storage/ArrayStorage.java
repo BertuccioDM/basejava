@@ -8,7 +8,10 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private Resume[] storage = new Resume[10_000];
+
+    private static final int STORAGE_LIMIT = 10_000;
+
+    private Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size = 0;
 
     public void clear() {
@@ -18,7 +21,7 @@ public class ArrayStorage {
     }
 
     public void save(Resume resume) {
-        if (size != storage.length) {
+        if (size < storage.length) {
             if (getIndex(resume.getUuid()) >= 0) {
                 System.out.println("uuid: " + resume.getUuid() + " уже используется.");
                 return;
