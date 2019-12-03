@@ -53,6 +53,10 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         }
     }
 
+
+    /**
+     * Исправить
+     */
     @Override
     public void delete(String uuid) {
         int deleteIndex = getIndex(uuid);
@@ -78,6 +82,10 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected void insertResume(Resume resume) {
-        //TODO
+        int insertIndex = (-1) * getIndex(resume.getUuid()) - 1;
+        for (int i = size; i > insertIndex; i--) {
+            storage[i] = storage[i - 1];
+        }
+        storage[insertIndex] = resume;
     }
 }
