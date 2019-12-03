@@ -17,46 +17,42 @@ public abstract class AbstractArrayStorage implements Storage {
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
-        System.out.println("Хранилище очищено.");
     }
 
     @Override
     public void save(Resume resume) {
-        if (size < storage.length) {
-            if (getIndex(resume.getUuid()) >= 0) {
-                System.out.println("uuid: " + resume.getUuid() + " уже используется.");
-                return;
-            }
+
+        if (getIndex(resume.getUuid()) != -1) {     //Резюме нет в storage?
+            System.out.println("Resume " + resume.getUuid() + " already exists.");
+        } else if (size == storage.length) {
+            System.out.println("Array overflow.");
+        } else {
             storage[size] = resume;
             size++;
-            System.out.println("Резюме с uuid: [" + resume.getUuid() + "] сохранено.");
-        } else {
-            System.out.println("Ошибка! Переполнение массива.");
         }
     }
 
     @Override
     public Resume get(String uuid) {
         int index = getIndex(uuid);
-        if (index >= 0) {
+        if (index >= 0) {       //Резюме есть в storage?
             return storage[index];
         }
-        System.out.println("Резюме с uuid [" + uuid + "] не найдено.");
+        System.out.println("Resume " + uuid + "not found.");
         return null;
     }
 
     @Override
     public void delete(String uuid) {
         int index = getIndex(uuid);
-        if (index >= 0) {
+        if (index >= 0) {       //Резюме есть в storage?
             if (index != size - 1) {
                 storage[index] = storage[size - 1];
             }
             storage[size - 1] = null;
             size--;
-            System.out.println("Резюме с uuid: [" + uuid + "] удалено.");
         } else {
-            System.out.println("Резюме с uuid [" + uuid + "] не найдено.");
+            System.out.println("Resume " + uuid + "not found.");
         }
     }
 
@@ -76,11 +72,10 @@ public abstract class AbstractArrayStorage implements Storage {
     @Override
     public void update(Resume resume) {
         int index = getIndex(resume.getUuid());
-        if (index >= 0) {
+        if (index >= 0) {       //Резюме есть в storage?
             storage[index] = resume;
-            System.out.println("Резюме с uuid: [" + resume.getUuid() + "] обновлено.");
         } else {
-            System.out.println("Резюме с uuid [" + resume.getUuid() + "] не найдено.");
+            System.out.println("Resume " + resume.getUuid() + "not found.");
         }
     }
 
