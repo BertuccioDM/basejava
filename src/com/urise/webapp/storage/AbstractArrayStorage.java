@@ -21,12 +21,13 @@ public abstract class AbstractArrayStorage implements Storage {
 
     @Override
     public void save(Resume resume) {
-        if (getIndex(resume.getUuid()) >= 0) {
+        int index = getIndex(resume.getUuid());
+        if (index >= 0) {
             System.out.println("Resume " + resume.getUuid() + " already exists.");
         } else if (size == storage.length) {
             System.out.println("Array overflow.");
-        } else {        //Резюме нет в storage?
-            insertResume(resume);
+        } else {
+            insertResume(resume, index);
             size++;
         }
     }
@@ -34,7 +35,7 @@ public abstract class AbstractArrayStorage implements Storage {
     @Override
     public Resume get(String uuid) {
         int index = getIndex(uuid);
-        if (index >= 0) {       //Резюме есть в storage?
+        if (index >= 0) {
             return storage[index];
         }
         System.out.println("Resume " + uuid + " not found.");
@@ -44,8 +45,8 @@ public abstract class AbstractArrayStorage implements Storage {
     @Override
     public void delete(String uuid) {
         int index = getIndex(uuid);
-        if (index >= 0) {       //Резюме есть в storage?
-            deleteResume(uuid);
+        if (index >= 0) {
+            deleteResume(index);
             size--;
         } else {
             System.out.println("Resume " + uuid + " not found.");
@@ -68,7 +69,7 @@ public abstract class AbstractArrayStorage implements Storage {
     @Override
     public void update(Resume resume) {
         int index = getIndex(resume.getUuid());
-        if (index >= 0) {       //Резюме есть в storage?
+        if (index >= 0) {
             storage[index] = resume;
         } else {
             System.out.println("Resume " + resume.getUuid() + " not found.");
@@ -77,7 +78,7 @@ public abstract class AbstractArrayStorage implements Storage {
 
     protected abstract int getIndex(String uuid);
 
-    protected abstract void insertResume(Resume resume);
+    protected abstract void insertResume(Resume resume, int index);
 
-    protected abstract void deleteResume(String uuid);
+    protected abstract void deleteResume(int index);
 }
