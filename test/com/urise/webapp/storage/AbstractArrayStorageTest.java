@@ -6,16 +6,18 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
-public class AbstractArrayStorageTest {
-    private Storage storage = new ArrayStorage();
+public abstract class AbstractArrayStorageTest {
+    private Storage storage;
     private final static String UUID_1 = "uuid1";
     private final static String UUID_2 = "uuid2";
     private final static String UUID_3 = "uuid3";
 
+    public AbstractArrayStorageTest(Storage storage) {
+        this.storage = storage;
+    }
+
     @Before
-    public void srtUp() throws Exception {
+    public void setUp() throws Exception {
         storage.clear();
         storage.save(new Resume(UUID_1));
         storage.save(new Resume(UUID_2));
@@ -28,7 +30,6 @@ public class AbstractArrayStorageTest {
 
     @Test
     public void save() {
-        Assert.assertEquals(3, storage.size());
     }
 
     @Test
@@ -50,6 +51,7 @@ public class AbstractArrayStorageTest {
 
     @Test
     public void size() {
+        Assert.assertEquals(3, storage.size());
     }
 
     @Test
