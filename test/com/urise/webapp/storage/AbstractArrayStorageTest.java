@@ -14,10 +14,10 @@ public abstract class AbstractArrayStorageTest {
     private final static String UUID_2 = "uuid2";
     private final static String UUID_3 = "uuid3";
     private final static String UUID_TEST = "test";
-    private final Resume RESUME_1 = new Resume(UUID_1);
-    private final Resume RESUME_2 = new Resume(UUID_2);
-    private final Resume RESUME_3 = new Resume(UUID_3);
-    private final Resume RESUME_TEST = new Resume(UUID_TEST);
+    private final static Resume RESUME_1 = new Resume(UUID_1);
+    private final static Resume RESUME_2 = new Resume(UUID_2);
+    private final static Resume RESUME_3 = new Resume(UUID_3);
+    private final static Resume RESUME_TEST = new Resume(UUID_TEST);
 
     AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
@@ -42,7 +42,7 @@ public abstract class AbstractArrayStorageTest {
     public void save() {
         storage.save(RESUME_TEST);
         Assert.assertEquals(4, storage.size());
-        Assert.assertEquals(RESUME_TEST, storage.get("test"));
+        Assert.assertEquals(RESUME_TEST, storage.get(UUID_TEST));
     }
 
     @Test(expected = ExistStorageException.class)
@@ -65,7 +65,6 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void get() {
-        storage.get(UUID_2);
         Assert.assertEquals(RESUME_2, storage.get(UUID_2));
     }
 
@@ -83,7 +82,7 @@ public abstract class AbstractArrayStorageTest {
 
     @Test(expected = NotExistStorageException.class)
     public void deleteNotExist() {
-        storage.delete(RESUME_TEST.getUuid());
+        storage.delete(UUID_TEST);
     }
 
     @Test
@@ -91,7 +90,7 @@ public abstract class AbstractArrayStorageTest {
         Resume[] result = storage.getAll();
         Resume[] array = new Resume[] {RESUME_1, RESUME_2, RESUME_3};
         Assert.assertEquals(storage.size(), result.length);
-        Assert.assertEquals(array, result);
+        Assert.assertArrayEquals(array, result);
     }
 
     @Test
@@ -101,11 +100,10 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void update() {
-        Resume before = storage.get(UUID_2);
         Resume test = new Resume(UUID_2);
         storage.update(test);
         Resume after = storage.get(UUID_2);
-        Assert.assertNotSame(before, after);
+        Assert.assertSame(test, after);
     }
 
     @Test(expected = NotExistStorageException.class)
